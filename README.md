@@ -2,7 +2,7 @@
 Code for simulations and analysis used in the manuscript "Proximal termination generates a transcriptional state that determines the rate of establishment of Polycomb silencing "<br>
 The file **20230117_autopathway_flc.cpp** contains the source code for simulations of the stochastic model using the Gillespie SSA, written in C++.
 The Gillespie SSA implementation uses a pseudo-random number generator from the GNU Scientific Library. The library needs to be linked during compilation.<br>
-**The source code was compiled on a system running macOS using the clang(LLVM) compiler using the following terminal command:**<br>
+**The source code was compiled on a system running macOS 12.5, using the clang(LLVM) compiler using the following terminal command:**<br>
 clang++ -Wall -pedantic 20230117_autopathway_flc.cpp -o 20230117_autopathway_flc  -lgsl -lgslcblas<br>
 <br>
 **The resulting output file "20230117_autopathway_flc" can be executed using the following terminal command, including six user specified inputs separated by spaces:**<br>
