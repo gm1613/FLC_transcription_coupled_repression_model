@@ -35,4 +35,5 @@ Column 1: Indices of H3 histones across the locus <br>
 Column 2: H3K27me3 status at the corresponding histones (averaged over all simulated trajectories), at the last timepoint of the simulation <br>
 Column 3: H3K4me1 status at the corresponding histones (averaged over all simulated trajectories), at the last timepoint of the simulation <br>
 <br>
-
+**Analysis code** <br>
+The file **analysis_280423.py" contains the Python code used to analyse the simulation output
