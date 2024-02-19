@@ -6,7 +6,7 @@
 //
 //
 // clang++ -Wall -pedantic 20230117_autopathway_flc.cpp -o 20230117_autopathway_flc  -lgsl -lgslcblas
-//  ./20230117_autopathway_flc 5 5 1 0.2 (3/0/-1)
+//  ./20230117_autopathway_flc 5 5 1 0.5 (3/0/-1) typeofsimulation
 
 //  Simulations for combined model of Transcription-coupled repression through proximal termination and Polycomb silencing at FLC, Menon et al., 2023
 
@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
     // FREE PARAMETERS
     const float kme = 8e-6; //PRC2 mediated me2 to me3 methylation rate (hist[-1]second[-1])
 
-    const float fmax = 1.1*(37/(2.3*25))*7.5e-4; //maximum transcription frequency (second[-1])
+    const float fmax = 5.3e-4; //maximum transcription frequency (second[-1])
 
     const float pdem = 25*0.004; //0.004 //demethylation probability per histone during transcription (hist[-1]transcription[-1])
     const float pex = 4e-3; // histone exchange proability per histone during transcription (hist[-1]transcription[-1])
@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
     const float alpha_antisense = 0.2; // Trans-factor activation parameter for antisense transcription
     
     // Polycomb activity parameter
-    const float beta = 0.55; // Set to 0.55 as default; set to zero for analog only simulations
+    const float beta = 0; // Set to 0.7 (previously 0.55) as default; set to zero for simulations of analog module in isolation
     
     
     // Cell Cycle duration PARAMETERS
@@ -124,26 +124,26 @@ int main(int argc, char *argv[])
     
     //Contact parameters for clf
 
-//        const float xi_nr_nr = 1; //Unchanged in clf
-//        const float xi_nr_lr = 1; //Unchanged in clf
-//        const float xi_nr_body = 0.12; //This is set to a lower value (0.12) for clf, 0.2 otherwise
-//        const float xi_lr_nr = 1; //Unchanged in clf
-//        const float xi_lr_lr = 1;//Unchanged in clf
-//        const float xi_lr_body = 0.12; //This is set to a lower value (0.12) for clf, 0.2 otherwise
-//        const float xi_body_nr = 0.01; //This is set to a lower value (0.01) for clf, 0.5 otherwise
-//        const float xi_body_lr = 0.01; //This is set to a lower value (0.01) for clf, 0.5 otherwise
-//        const float xi_body_body = 0.01; //This is set always to 0.01
+        const float xi_nr_nr = 0.8; //Unchanged in clf
+        const float xi_nr_lr = 0.8; //Unchanged in clf
+        const float xi_nr_body = 0.12; //This is set to a lower value (0.12) for clf, 0.2 otherwise
+        const float xi_lr_nr = 0.8; //Unchanged in clf
+        const float xi_lr_lr = 0.8;//Unchanged in clf
+        const float xi_lr_body = 0.12; //This is set to a lower value (0.12) for clf, 0.2 otherwise
+        const float xi_body_nr = 0.05; //This is set to a lower value (0.01) for clf, 0.5 otherwise (NR contribution TO body region)
+        const float xi_body_lr = 0.05; //This is set to a lower value (0.01) for clf, 0.5 otherwise (LR contribution TO body region)
+        const float xi_body_body = 0.01; //This is set always to 0.01
 
     //Contact parameters for WT
-        const float xi_nr_nr = 1; //Unchanged in clf
-        const float xi_nr_lr = 1; //Unchanged in clf
-        const float xi_nr_body = 0.2; //This is set to a lower value (0.12) for clf, 0.2 otherwise
-        const float xi_lr_nr = 1; //Unchanged in clf
-        const float xi_lr_lr = 1;//Unchanged in clf
-        const float xi_lr_body = 0.2; //This is set to a lower value (0.12) for clf, 0.2 otherwise
-        const float xi_body_nr = 0.5; //This is set to a lower value (0.01) for clf, 0.5 otherwise
-        const float xi_body_lr = 0.5; //This is set to a lower value (0.01) for clf, 0.5 otherwise
-        const float xi_body_body = 0.01; //This is set always to 0.01
+//        const float xi_nr_nr = 1; //Unchanged in clf
+//        const float xi_nr_lr = 1; //Unchanged in clf
+//        const float xi_nr_body = 0.2; //This is set to a lower value (0.12) for clf, 0.2 otherwise
+//        const float xi_lr_nr = 1; //Unchanged in clf
+//        const float xi_lr_lr = 1;//Unchanged in clf
+//        const float xi_lr_body = 0.2; //This is set to a lower value (0.12) for clf, 0.2 otherwise
+//        const float xi_body_nr = 0.5; //This is set to a lower value (0.01) for clf, 0.5 otherwise
+//        const float xi_body_lr = 0.5; //This is set to a lower value (0.01) for clf, 0.5 otherwise
+//        const float xi_body_body = 0.01; //This is set always to 0.01
     
 
     
