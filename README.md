@@ -6,7 +6,7 @@ The Gillespie SSA implementation uses a pseudo-random number generator from the 
 clang++ -Wall -pedantic 20230117_autopathway_flc.cpp -o 20230117_autopathway_flc  -lgsl -lgslcblas<br>
 <br>
 **The resulting output file "20230117_autopathway_flc" can be executed using the following terminal command, including six user specified inputs separated by spaces:**<br>
-./20230117_autopathway_flc <Number of simulated trajectories>  <Duration of individual simulation(number of cell cycles)> <FCA parameter> <FLD mediated demethylation probability per histone per proximal termination event> <Initial H3 state across locus (3/0/-1)> <Name tag for ouput files> <br>
+./20230117_autopathway_flc <"Number of simulated trajectories">  <"Duration of individual simulation(number of cell cycles)"> <"FCA parameter"> <"FLD mediated demethylation probability per histone per proximal termination event"> <"Initial H3 state across locus (3/0/-1)"> <"Name tag for ouput files"> <br>
 <br>
 **The code generates five output text files:** <br>
 (1) parameter values <br>
@@ -37,4 +37,9 @@ Column 3: H3K4me1 status at the corresponding histones (averaged over all simula
 <br>
 **Analysis code** <br>
 The file **analysis_280423.py** contains the Python code used to analyse the simulation output <br>
+<br>
+**Model comparison to data** <br>
+The comparison plots, such as those in Fig. 4 and Fig. 5 were made using Graphpad Prism version 10.1.0 for macOS <br>
+See main text and supplementary information for details of these comparisons. <br>
+Experimental datasets used in these comparisons are available on request <br> 
 <br>
