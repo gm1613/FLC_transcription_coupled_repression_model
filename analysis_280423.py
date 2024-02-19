@@ -10,10 +10,15 @@ import pandas as pd
 import numpy as np
 from scipy import stats
 import matplotlib.pyplot as plt
+import seaborn as sns
+
+#%%
+from matplotlib import rc
+rc('font',**{'family':'sans-serif','sans-serif':['Arial']})
 
 #%% Section 1: Plotting transcriptional activity over time 
 
-type1b_out = np.loadtxt("20220117_autopathway_flc_type1b_tid1_ler.txt",delimiter=' ')
+type1b_out = np.loadtxt("20230117_autopathway_flc_type1b_tid1_only_analog_fca1_0124.txt",delimiter=' ')
 
 t = type1b_out[:,0]*0.917 # Time t is multiplied by 0.917 to convert units from cell cycles (22h) to days (24h)
 
@@ -41,14 +46,20 @@ ax[3].set_yticks([0,0.5])
 fig.subplots_adjust(hspace=0.5)
 
 fig, ax=plt.subplots(nrows=1,ncols=1)
-ax.vlines(t,0,total_transc,'grey')
+ax.vlines(t,0,sense_dist,'grey')
 ax.set_ylim([0,4])
 ax.set_xlim([0,21])
 fig.subplots_adjust(hspace=0.5)
 
-#%% Section 1b: Plotting differences in prox/dist ratio (Only analog module)
 
-type1b_out = np.loadtxt("20220117_autopathway_flc_type1b_tid1_fca1.txt",delimiter=' ')
+# For 10, 14, 21 day timepoints, compute and print frequency averaged over previous  6hr
+print("sense_dist:",np.mean(sense_dist[234:241]),np.mean(sense_dist[330:337]),np.mean(sense_dist[498:505]))
+
+
+
+#%% Section 1b: Plotting differences in prox/dist ratio
+
+type1b_out = np.loadtxt("20230117_autopathway_flc_type1b_tid1_fca1_1223.txt",delimiter=' ')
 
 
 t = type1b_out[:,0]*0.917 # For the 6.75 days to 7 days window, take indices 162-168
@@ -56,19 +67,19 @@ t = type1b_out[:,0]*0.917 # For the 6.75 days to 7 days window, take indices 162
                           # Time t is multiplied by 0.917 to convert units from cell cycles (22h) to days (24h)
 
 
-sense_prox_fca1 = np.mean(type1b_out[162:168,1])[]=======
+sense_prox_fca1 = np.mean(type1b_out[162:168,1])
 sense_dist_fca1 = np.mean(type1b_out[162:168,2])
 as_prox_fca1 = np.mean(type1b_out[162:168,3])
 as_dist_fca1 = np.mean(type1b_out[162:168,4])
 
-type1b_out = np.loadtxt("20220117_autopathway_flc_type1b_tid1_fca3.txt",delimiter=' ')
+type1b_out = np.loadtxt("20230117_autopathway_flc_type1b_tid1_fca3_1223.txt",delimiter=' ')
 
 sense_prox_fca3 = np.mean(type1b_out[162:168,1])
 sense_dist_fca3 = np.mean(type1b_out[162:168,2])
 as_prox_fca3 = np.mean(type1b_out[162:168,3])
 as_dist_fca3 = np.mean(type1b_out[162:168,4])
 
-type1b_out = np.loadtxt("20220117_autopathway_flc_type1b_tid1_clf.txt",delimiter=' ')
+type1b_out = np.loadtxt("20230117_autopathway_flc_type1b_tid1_clfnew_1223.txt",delimiter=' ')
 
 sense_prox_clf = np.mean(type1b_out[162:168,1])
 sense_dist_clf = np.mean(type1b_out[162:168,2])
@@ -77,7 +88,7 @@ as_dist_fca3 = np.mean(type1b_out[162:168,4])
 
 
 
-type1b_out = np.loadtxt("20220117_autopathway_flc_type1b_tid1_ler.txt",delimiter=' ')
+type1b_out = np.loadtxt("20230117_autopathway_flc_type1b_tid1_Ler_1223.txt",delimiter=' ')
 
 sense_prox_wt = np.mean(type1b_out[162:168,1])
 sense_dist_wt = np.mean(type1b_out[162:168,2])
@@ -93,8 +104,8 @@ rclf = (sense_prox_clf/sense_dist_clf)/r0
 
 
 #%% Section 2: Plotting changes over time (averaged over trajectories)
-
-type1a_out = np.loadtxt("20220117_autopathway_flc_type1a_tid1_fca3clf.txt",delimiter=' ')
+name_tag = "fca1_1223"
+type1a_out = np.loadtxt("20230117_autopathway_flc_type1a_tid1_"+name_tag+".txt",delimiter=' ')
 
 t = type1a_out[:,0]*0.917# Time t is multiplied by 0.917 to convert units from cell cycles (22h) to days (24h)
 
@@ -105,24 +116,34 @@ n_off = type1a_out[:,4]
 fig, ax=plt.subplots()
 ax.plot(t,k27_whole,'r',linewidth=2,label='H3K27me3')
 ax.plot(t,k4,'b',linewidth=2,label='H3K4me1')
-plt.title("fca3clf")
+plt.title(name_tag)
 plt.legend()
 
 fig, ax=plt.subplots()
-ax.plot(t,n_off/100,'k--',linewidth=2,label='$N_{OFF}$')
-plt.title("fca3clf")
+ax.plot(t,n_off/5000,'k--',linewidth=2,label='$N_{OFF}$')
+plt.title(name_tag)
 plt.legend()
 
 
-#%% Section 3: Plotting switchoff time histograms: WT vs fca3
-type1c_out_wt = np.loadtxt("20220117_autopathway_flc_type1c_tid1_longler.txt",delimiter=' ')
-type1c_out_fca3 = np.loadtxt("20220117_autopathway_flc_type1c_tid1_longfca3.txt",delimiter=' ')
+#%% 
+#Print average coverage of H3K4me1 at 7, 14, and 21 day timepoints
+print("k4:",k4[382],k4[763],k4[1145])
+
+#Print average coverage of H3K27me3 at 7, 14, and 21 day timepoints
+print("k27_whole:",k27_whole[382],k27_whole[763],k27_whole[1145])
+
+#%% Section 3: Plotting switchoff time histograms: WT vs fca3 vs fca1
+type1c_out_wt = np.loadtxt("20230117_autopathway_flc_type1c_tid1_ler_1223.txt",delimiter=' ')
+type1c_out_fca3 = np.loadtxt("20230117_autopathway_flc_type1c_tid1_fca3_1223.txt",delimiter=' ')
+type1c_out_fca1 = np.loadtxt("20230117_autopathway_flc_type1c_tid1_fca1_1223.txt",delimiter=' ')
 
 nswitched_wt = np.sum(type1c_out_wt>0)
 nswitched_fca3 = np.sum(type1c_out_fca3>0)
+nswitched_fca1 = np.sum(type1c_out_fca1>0)
 
 wt_switchtimes = np.zeros(nswitched_wt)
 fca3_switchtimes = np.zeros(nswitched_fca3)
+fca1_switchtimes = np.zeros(nswitched_fca1)
 
 n = type1c_out_wt.shape[0]
 
@@ -140,58 +161,24 @@ for i in range(0,n):
         fca3_switchtimes[counter]=type1c_out_fca3[i]
         counter+=1
         
-fig, ax=plt.subplots()
-ax.hist(wt_switchtimes*0.917, density=True,bins=30, histtype='step', linewidth=2, facecolor='grey', edgecolor='grey',fill=True)
-ax.hist(fca3_switchtimes*0.917, density=True,bins=30, histtype='step', linewidth=2, facecolor='green', hatch='/', edgecolor='green',fill=False,alpha=1)
-plt.xlim([-0.5,21])
-ax.set_xticks([0,5,10,15,20,25,30])
-ax.set_yticks([0,0.05,0.1,0.15,0.20,0.25])
-ax.spines['top'].set_linewidth(2)
-ax.spines['left'].set_linewidth(2)       
-ax.spines['bottom'].set_linewidth(2)
-ax.spines['right'].set_linewidth(2)   
-
-#%% Section S3: Plotting switchoff time histograms: Different transcription frequencies
-type1c_out_wt = np.loadtxt("20220117_autopathway_flc_type1c_tid1_wtlike.txt",delimiter=' ')
-type1c_out_fca3 = np.loadtxt("20220117_autopathway_flc_type1c_tid1_fca3like.txt",delimiter=' ')
-
-nswitched_wt = np.sum(type1c_out_wt>0)
-nswitched_fca3 = np.sum(type1c_out_fca3>0)
-
-wt_switchtimes = np.zeros(nswitched_wt)
-fca3_switchtimes = np.zeros(nswitched_fca3)
-
-n = type1c_out_wt.shape[0]
-
-counter = 0;
-for i in range(0,n):
-    if (type1c_out_wt[i]>0.01):
-        wt_switchtimes[counter]=type1c_out_wt[i]
-        counter+=1
-
-n = type1c_out_fca3.shape[0]
-
 counter=0;
 for i in range(0,n):
-    if (type1c_out_fca3[i]>0.01):
-        fca3_switchtimes[counter]=type1c_out_fca3[i]
+    if (type1c_out_fca1[i]>0.01):
+        fca1_switchtimes[counter]=type1c_out_fca1[i]
         counter+=1
-        
-        
-fig, ax=plt.subplots()
-ax.hist(wt_switchtimes, density=True,bins=30, histtype='step', linewidth=2, facecolor='royalblue', edgecolor='royalblue',fill=False)
-ax.hist(fca3_switchtimes, density=True,bins=50, histtype='step', linewidth=2, facecolor='r', hatch='/', edgecolor='r',fill=False)
-plt.xlim([-0.5,20])
-ax.set_xticks([0,5,10,15,20])
-ax.spines['top'].set_linewidth(2)
-ax.spines['left'].set_linewidth(2)       
-ax.spines['bottom'].set_linewidth(2)
-ax.spines['right'].set_linewidth(2)   
+          
+
+plt.figure()
+sns.histplot(fca1_switchtimes*0.917,stat='density',bins=75,color='blue')
+sns.histplot(fca3_switchtimes*0.917,stat='density',bins=50,color='green')
+sns.histplot(wt_switchtimes*0.917,stat='density',bins=30,color='gray')
+
+  
 
 
 #%%  Section 4: Plotting steady state spatial profile of H3K27me3 at FLC
 
-pf = np.loadtxt("20220117_autopathway_flc_type1d_tid1_ler.txt",delimiter=' ')
+pf = np.loadtxt("20230117_autopathway_flc_type1d_tid1_Ler_short_0124.txt",delimiter=' ')
 
 m=60 #Number of nucleosomes
 ik27 = np.arange(0,m,1)
@@ -221,10 +208,10 @@ avg_k4 = np.amax(pfk4,axis=0)
 
 
 
-#%% Performing convolution with ChIP fragment size distribution (see Wu et al. 2015)
+#%% Performing convolution with ChIP fragment size distribution (see Wu et al. 2016)
 
 ######################################################
-# EXTRACTING ChIP FRAGMENT SIZE DISTRIBUTION FROM Wu et al. 2015
+# EXTRACTING ChIP FRAGMENT SIZE DISTRIBUTION FROM Wu et al. 2016
 llim = 0          
 ulim = 0.25      
 lcd = 848
@@ -232,11 +219,20 @@ ucd = 196
 
 pcd = np.array((671,318,574,406,530,623,637,686,690,730))
 
-fdist = (ulim-llim)*(lcd-pcd)/(lcd-ucd)
-x = np.arange(100,1001,100)
+# pcd = np.array((671,318,350,406,500,545,580,600,630,680))
+
+fdist = (ulim-llim)*(lcd-pcd)/(lcd-ucd) #PROBABILITY
+x = np.arange(100,1001,100)             #FRAGMENT SIZE IN bp
 
 
 ########################################################
+
+# SPECIFYING ChIP FRAGMENT SIZE DISTRIBUTION (FROM Wu et al. 2015)
+#PROBABILITY
+fdist= np.array((0.0678,0.2010,0.1050,0.1694,0.1219,0.0862,0.0809,0.0621,0.0605,0.0452))
+x = np.arange(100,1001,100)#FRAGMENT SIZE IN bp
+
+
 xc = np.arange(1,61,1)
 coverage = np.zeros((100,2))
 nuc_x = np.arange(1,100,2)
@@ -282,11 +278,11 @@ fk27 = avg_k27/mk27
 
 nm_density = fk27*m_density[:,0]
 
-np.savetxt('ler_profile_new.txt',nm_density,delimiter='\n')
+#np.savetxt('Ler_profile_0124.txt',nm_density,delimiter='\n')
 
 #%% Plotting predicted ChIP profiles
-nm1 = np.loadtxt('clf_profile_new.txt',delimiter='\n')
-nm2 = np.loadtxt('ler_profile_new.txt',delimiter='\n')
+nm1 = np.loadtxt('clfnew_profile_0124.txt')
+nm2 = np.loadtxt('Ler_profile_0124.txt')
 ratio = 1/5
 fig, ax=plt.subplots()
 plt.fill_between(dwindow/1000,0,nm2,facecolor='royalblue',label='WT')
